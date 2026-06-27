@@ -1,0 +1,232 @@
+: ai_skin_analysis
+description: AI Skin Analysis App
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  image_picker: ^1.1.2
+  camera: ^0.11.0
+  google_fonts: ^6.2.1
+  provider: ^6.1.2
+  http: ^1.2.1
+  flutter_svg: ^2.0.10
+  lottie: ^3.1.2
+  shared_preferences: ^2.2.3
+  path_provider: ^2.1.3
+  permission_handler: ^11.3.1
+  pdf: ^3.11.0
+  printing: ^5.13.2
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'home_screen.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const HomeScreen(),
+        ),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+
+            Icon(
+              Icons.spa,
+              size: 90,
+              color: Colors.green,
+            ),
+
+            SizedBox(height: 20),
+
+            Text(
+              "AI Skin Analysis",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            SizedBox(height: 10),
+
+            Text(
+              "Analyze your skin with AI",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+
+            SizedBox(height: 40),
+
+            CircularProgressIndicator(),
+          ],
+        ),
+      ),
+    );
+  }
+}import 'package:flutter/material.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("AI Skin Analysis"),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+
+            Card(
+              child: ListTile(
+                leading: const CircleAvatar(
+                  child: Icon(Icons.person),
+                ),
+                title: const Text("Welcome"),
+                subtitle: const Text("Let's analyze your skin"),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            Card(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+
+                    Text(
+                      "Skin Score",
+                      style: TextStyle(fontSize: 18),
+                    ),
+
+                    SizedBox(height: 15),
+
+                    Text(
+                      "87",
+                      style: TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.camera_alt),
+                label: Text("Scan Your Face"),
+              ),
+            ),
+
+           MainAxisAlignment.centerimport 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class ScanScreen extends StatefulWidget {
+  const ScanScreen({super.key});
+
+  @override
+  State<ScanScreen> createState() => _ScanScreenState();
+}
+
+class _ScanScreenState extends State<ScanScreen> {
+  File? image;
+
+  Future pickImage() async {
+    final picker = ImagePicker();
+
+    final file = await picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 90,
+    );
+
+    if (file == null) return;
+
+    setState(() {
+      image = File(file.path);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Face Scan"),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              image == null
+                  ? const Icon(
+                      Icons.face,
+                      size: 150,
+                    )
+                  : Image.file(
+                      image!,
+                      height: 250,
+                    ),
+
+              const SizedBox(height: 30),
+
+              ElevatedButton.icon(
+                onPressed: pickImage,
+                icon: const Icon(Icons.camera_alt),
+                label: const Text("Take Photo"),
+              ),
+
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}ImageSource.camera
